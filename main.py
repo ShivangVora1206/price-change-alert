@@ -23,7 +23,7 @@ def send_email_alert(price):
     msg['Subject'] = "Gold ETF Price Alert"
     msg['From'] = EMAIL_ADDRESS
     msg['To'] = EMAIL_ADDRESS  # You can set this to any recipient
-    msg.set_content(f"Alert! ICICI Prudential Gold ETF price is ₹{price:.2f}, which is above your threshold of ₹85.73.")
+    msg.set_content(f"Alert! ICICI Prudential Gold ETF price is ₹{price:.2f}, which is above your threshold of ₹{os.environ.get('THRESHOLD')}.")
 
     with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
         smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)

@@ -1,0 +1,23 @@
+name: Gold ETF Price Alert
+
+on:
+  schedule:
+    - cron: '*/10 4-10 * * 1-5' # Every 10 minutes, 9:30-15:30 IST Mon-Fri (convert to UTC)
+  workflow_dispatch: # Manual trigger
+
+jobs:
+  alert:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    - name: Install dependencies
+      run: pip install yfinance
+    - name: Run alert script
+      env:
+        ALERT_EMAIL: ${{ secrets.ALERT_EMAIL }}
+        ALERT_EMAIL_PWD: ${{ secrets.ALERT_EMAIL_PWD }}
+      run: python main.py

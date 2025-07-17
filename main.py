@@ -30,7 +30,7 @@ def send_email_alert(price):
         smtp.send_message(msg)
 
 if __name__ == "__main__":
-    threshold = 85.73
+    threshold = float(os.environ.get('THRESHOLD'))  # Default threshold if not set
     price = get_gold_etf_price()
     if price and price > threshold:
         send_email_alert(price)

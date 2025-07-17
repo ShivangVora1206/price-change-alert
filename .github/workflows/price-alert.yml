@@ -20,4 +20,5 @@ jobs:
       env:
         ALERT_EMAIL: ${{ secrets.ALERT_EMAIL }}
         ALERT_EMAIL_PWD: ${{ secrets.ALERT_EMAIL_PWD }}
+        THRESHOLD: ${{ secrets.THRESHOLD }}
       run: python main.py

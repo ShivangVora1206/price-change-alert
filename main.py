@@ -18,12 +18,12 @@ def get_gold_etf_price():
     print(f"ICICI Prudential Gold ETF (ICICIGOLD.NS) latest closing price: ₹{latest_price:.2f}")
     return latest_price
 
-def send_email_alert(price):
+def send_email_alert(buy_price, units, diff, price):
     msg = EmailMessage()
     msg['Subject'] = "Gold ETF Price Alert"
     msg['From'] = EMAIL_ADDRESS
     msg['To'] = EMAIL_ADDRESS  # You can set this to any recipient
-    msg.set_content(f"Alert! ICICI Prudential Gold ETF price is ₹{price:.2f}, which is above your threshold of ₹{os.environ.get('THRESHOLD')}.")
+    msg.set_content(f"Alert! ICICI Prudential Gold ETF price is ₹{price:.2f}, which is above your threshold of ₹{os.environ.get('THRESHOLD')}.\n Buy price: {buy_price}\n Units: {units}\n Diff: {diff}")
 
     with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
         smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
@@ -31,6 +31,8 @@ def send_email_alert(price):
 
 if __name__ == "__main__":
     threshold = float(os.environ.get('THRESHOLD'))  # Default threshold if not set
+    buy = 85.73
+    units = 350
     price = get_gold_etf_price()
     if price and price > threshold:
-        send_email_alert(price)
+        send_email_alert(buy, units, (price-buy)*units, price)
